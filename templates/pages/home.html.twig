@@ -1,0 +1,19 @@
+{% extends '/layouts/base.html.twig' %}
+
+{% block title %} {{ controller_name }} - {{ parent() }} {% endblock %}
+
+{% block main %}
+  <main class="c-main" role="main">
+
+    <section class="c-main__container container">
+
+      <div class="c-main__row row">
+        <div class="c-main__col col">
+          <h1>{{ controller_name }}</h1>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+{% endblock %}

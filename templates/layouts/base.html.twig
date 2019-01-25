@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <title>{% block title %}Sfff4 {% endblock %}</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="{{ asset('build/stylesheets/app.css') }}">
+  {% block stylesheets %}{% endblock %}
+</head>
+<body>
+
+{% include "/partials/browserhappy.twig" %}
+{% include "/partials/header.twig" %}
+
+{% block main %}{% endblock %}
+
+{% include "/partials/footer.twig" %}
+
+{% block modal %}{% endblock %}
+
+<script src="{{ asset('build/javascripts/app.js') }}"></script>
+{% block javascripts %}{% endblock %}
+</body>
+</html>
