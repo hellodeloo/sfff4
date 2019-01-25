@@ -20,11 +20,11 @@ Encore
    */
   .addEntry('stylesheets/app', './assets/stylesheets/app.scss')
   .addEntry('javascripts/app', './assets/javascripts/app.js')
-  //.addEntry('images', glob.sync('./assets/images/*'))
+  .addEntry('images', glob.sync('./assets/images/*'))
 
   // will require an extra script tag for runtime.js
   // but, you probably want this, unless you're building a single-page app
-  .enableSingleRuntimeChunk()
+  .disableSingleRuntimeChunk()
 
   /*
    * FEATURE CONFIG
@@ -35,6 +35,9 @@ Encore
    */
   .cleanupOutputBeforeBuild()
   .enableBuildNotifications()
+
+  // allow legacy applications to use $/jQuery as a global variable
+  .autoProvidejQuery()
 
   // enables Sass/SCSS support
   .enableSassLoader()

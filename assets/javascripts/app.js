@@ -2,11 +2,7 @@ const $ = require('jquery');
 require('popper.js');
 require('bootstrap');
 
-console.log('log');
-
 // Global Vars
-global.$ = global.jQuery = $;
-
 let smUp = 576;
 let mdUp = 768;
 let lgUp = 992;
