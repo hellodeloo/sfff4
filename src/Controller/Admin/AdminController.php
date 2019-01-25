@@ -1,14 +1,16 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
+
 class AdminController extends AbstractController
 {
   /**
-   * @Route("/sfff4-admin", name="admin")
+   * @Route("/admin", name="admin.index")
+   * @return \Symfony\Component\HttpFoundation\Response
    */
   public function index()
   {

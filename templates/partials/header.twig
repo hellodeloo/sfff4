@@ -17,7 +17,11 @@
             <a class="nav-link {% if current_menu_item is defined and current_menu_item == 'contact' %}active{% endif %}" href="{{ path('contact') }}">Contact</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link {% if current_menu_item is defined and current_menu_item == 'admin' %}active{% endif %}" href="{{ path('admin') }}">Admin</a>
+            {% if app.user %}
+              <a class="nav-link {% if current_menu_item is defined and current_menu_item == 'admin' %}active{% endif %}" href="{{ path('logout') }}">Admin/Logout</a>
+            {% else %}
+            <a class="nav-link {% if current_menu_item is defined and current_menu_item == 'admin' %}active{% endif %}" href="{{ path('admin.index') }}">Admin/Login</a>
+            {% endif %}
           </li>
         </ul>
       </nav>
