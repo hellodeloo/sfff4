@@ -10,6 +10,21 @@
       <div class="c-main__row row">
         <div class="c-main__col col">
           <h1>{{ controller_name }}</h1>
+
+          {% if not form.vars.valid %}
+            <div class="alert alert-danger">
+              Erreur je ne sais pas quoi
+            </div>
+          {% endif %}
+
+          <div>
+            {{ form_start(form) }}
+            {{ form_rest(form) }}
+            <div class="form-group">
+              <button class="btn btn-primary">Envoyer</button>
+            </div>
+            {{ form_end(form) }}
+          </div>
         </div>
       </div>
 

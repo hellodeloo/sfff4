@@ -9,6 +9,13 @@
 
       <div class="c-main__row row">
         <div class="c-main__col col text-center">
+
+          {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+              {{ message }}
+            </div>
+          {% endfor %}
+
           <p><img src="{{ asset('build/images/sfff4.png') }}" class="img-fluid" alt=""></p>
         </div>
       </div>
