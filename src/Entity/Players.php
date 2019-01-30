@@ -20,7 +20,6 @@ class Players
   /**
    * @ORM\Column(type="string", length=255, nullable=true)
    * @var string|null
-   * @Assert\NotBlank()
    * @Assert\Length(min=2, max=100)
    */
   private $firstname;
@@ -28,7 +27,6 @@ class Players
   /**
    * @ORM\Column(type="string", length=255, nullable=true)
    * @var string|null
-   * @Assert\NotBlank()
    * @Assert\Length(min=2, max=100)
    */
   private $lastname;
@@ -36,7 +34,6 @@ class Players
   /**
    * @ORM\Column(type="string", length=255, nullable=true)
    * @var string|null
-   * @Assert\NotBlank()
    * @Assert\Email()
    */
   private $email;
@@ -55,7 +52,6 @@ class Players
   /**
    * @ORM\Column(type="string", length=255, nullable=true)
    * @var string|null
-   * @Assert\NotBlank()
    * @Assert\Length(min=2, max=100)
    */
   private $city;

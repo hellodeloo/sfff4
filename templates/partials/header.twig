@@ -7,10 +7,10 @@
             <a class="nav-link {% if current_menu_item is defined and current_menu_item == 'home' %}active{% endif %}" href="{{ path('home') }}">Home</a>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Concours</a>
+            <a class="nav-link dropdown-toggle {% if current_menu_item is defined and current_menu_item == 'contest' %}active{% endif %}" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Concours</a>
             <div class="dropdown-menu">
-              <a class="dropdown-item" href="#">en Html</a>
-              <a class="dropdown-item" href="#">en Vue.js</a>
+              <a class="dropdown-item" href="{{ path('contest.step01') }}">en Html</a>
+              <a class="dropdown-item" href="{{ path('contest.stepVue') }}">en Vue.js</a>
             </div>
           </li>
           <li class="nav-item">
