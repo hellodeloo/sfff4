@@ -1,0 +1,27 @@
+{% extends '/layouts/base.html.twig' %}
+
+{% block title %} {{ controller_name }} - {{ parent() }} {% endblock %}
+
+{% block main %}
+  <main class="c-main" role="main">
+
+    <section class="c-main__container container">
+
+      <div class="c-main__row row">
+        <div class="c-main__col col">
+          <h1>{{ controller_name }}</h1>
+
+          <div>
+            <h2>bienvenue blabla</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam assumenda beatae blanditiis distinctio eos magni, molestias nostrum, saepe sint, tenetur voluptatem voluptates? Cum doloribus eaque expedita facere minus sint ut?</p>
+            <div class="form-group">
+              <a href="{{ path('contest.step01') }}" class="btn btn-primary">Commencer</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+{% endblock %}
