@@ -9,8 +9,3 @@
 ### run
 `php bin/console server:run`
 `yarn run dev-server`
-
-
-### admin
-`admin`
-`admin_sfff4@`
