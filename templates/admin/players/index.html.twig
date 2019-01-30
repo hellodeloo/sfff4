@@ -1,0 +1,53 @@
+{% extends '/layouts/base.html.twig' %}
+
+{% block title %} {{ controller_name }} - {{ parent() }} {% endblock %}
+
+{% block main %}
+  <main class="c-main" role="main">
+
+    <section class="c-main__container container">
+
+      <div class="c-main__row row">
+        <div class="c-main__col col">
+          <h1>{{ controller_name }}</h1>
+
+          <table class="table table-striped">
+            <thead>
+            <tr>
+              <th></th>
+              <th>Prénom</th>
+              <th>Nom</th>
+              <th>Ville</th>
+              <th>Étape</th>
+              <th>Date</th>
+              <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for player in players %}
+              <tr>
+                <td>{{ player.id }}</td>
+                <td>{{ player.firstname }}</td>
+                <td>{{ player.lastname }}</td>
+                <td>{{ player.city }}</td>
+                <td>{{ player.currentStep }}</td>
+                <td>{{ player.updatedAt ? player.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                  <a href="{{ path('admin.players.show', {'id': player.id}) }}" class="btn btn-secondary">Voir</a>
+                  <form method="post" action="{{ path('admin.players.delete', {'id': player.id}) }}" style="display: inline-block" onsubmit="return confirm('Êtes vous vraiment sûr ?')">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ player.id) }}">
+                    <button class="btn btn-danger">Supprimer</button>
+                  </form>
+                </td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+{% endblock %}

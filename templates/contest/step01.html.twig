@@ -11,6 +11,12 @@
         <div class="c-main__col col">
           <h1>{{ controller_name }}</h1>
 
+          {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+              {{ message }}
+            </div>
+          {% endfor %}
+
           {% if not form.vars.valid %}
             <div class="alert alert-danger">
               Erreur je ne sais pas quoi
@@ -21,7 +27,7 @@
             {{ form_start(form) }}
             {{ form_rest(form) }}
             <div class="form-group">
-              <button class="btn btn-primary">Envoyer</button>
+              <button class="btn btn-primary">Etape suivante</button>
             </div>
             {{ form_end(form) }}
           </div>

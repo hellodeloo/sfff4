@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+
+<title>Players</title>
+
+{% block body %}
+    <h1>Players</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ player.id }}</td>
+            </tr>
+            <tr>
+                <th>Firstname</th>
+                <td>{{ player.firstname }}</td>
+            </tr>
+            <tr>
+                <th>Lastname</th>
+                <td>{{ player.lastname }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ player.email }}</td>
+            </tr>
+            <tr>
+                <th>Address</th>
+                <td>{{ player.address }}</td>
+            </tr>
+            <tr>
+                <th>Postal_code</th>
+                <td>{{ player.postalCode }}</td>
+            </tr>
+            <tr>
+                <th>City</th>
+                <td>{{ player.city }}</td>
+            </tr>
+            <tr>
+                <th>Current_step</th>
+                <td>{{ player.currentStep }}</td>
+            </tr>
+            <tr>
+                <th>Created_at</th>
+                <td>{{ player.createdAt ? player.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Updated_at</th>
+                <td>{{ player.updatedAt ? player.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('admin.players.index') }}">back to list</a>
+
+    {{ include('admin/players/_delete_form.html.twig') }}
+{% endblock %}

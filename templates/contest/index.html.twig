@@ -11,19 +11,12 @@
         <div class="c-main__col col">
           <h1>{{ controller_name }}</h1>
 
-          {% if not form.vars.valid %}
-            <div class="alert alert-danger">
-              Erreur je ne sais pas quoi
-            </div>
-          {% endif %}
-
           <div>
-            {{ form_start(form) }}
-            {{ form_rest(form) }}
+            <h2>bienvenue blabla</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam assumenda beatae blanditiis distinctio eos magni, molestias nostrum, saepe sint, tenetur voluptatem voluptates? Cum doloribus eaque expedita facere minus sint ut?</p>
             <div class="form-group">
-              <button class="btn btn-primary">Envoyer</button>
+              <a href="{{ path('contest.step01') }}" class="btn btn-primary">Commencer</a>
             </div>
-            {{ form_end(form) }}
           </div>
         </div>
       </div>
