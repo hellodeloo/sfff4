@@ -4,10 +4,12 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PlayersRepository")
  * @ORM\HasLifecycleCallbacks()
+ * @UniqueEntity("email")
  */
 class Players
 {
@@ -72,6 +74,7 @@ class Players
    * @ORM\Column(type="datetime")
    */
   private $updated_at;
+
 
   /**
    * Players constructor.
