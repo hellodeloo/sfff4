@@ -7,6 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PlayersRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Players
 {
@@ -57,9 +58,10 @@ class Players
   private $city;
 
   /**
-   * @ORM\Column(type="string", length=255, options={"default": "step00"})
+   * @ORM\Column(type="string", length=255)
+   * @var string|null
    */
-  private $current_step = 'step00';
+  private $current_step;
 
   /**
    * @ORM\Column(type="datetime")
@@ -79,7 +81,6 @@ class Players
   {
     $this->created_at = new \DateTime();
     $this->updated_at = new \DateTime();
-
   }
 
   public function getId(): ?int
@@ -171,7 +172,7 @@ class Players
     return $this;
   }
 
-  public function getCreatedAt(): ?\DateTimeInterface
+   public function getCreatedAt(): ?\DateTimeInterface
   {
     return $this->created_at;
   }
@@ -193,5 +194,14 @@ class Players
     $this->updated_at = $updated_at;
 
     return $this;
+  }
+
+  /**
+   * @throws \Exception
+   * @ORM\PreUpdate
+   */
+  public function setUpdatedAtValue()
+  {
+    $this->updated_at = new \DateTime();
   }
 }

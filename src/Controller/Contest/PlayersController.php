@@ -20,12 +20,12 @@ class PlayersController extends AbstractController
   /**
    * @var ObjectManager
    */
-  private $em;
+  private $om;
 
-  public function __construct(PlayersRepository $repository, ObjectManager $em)
+  public function __construct(PlayersRepository $repository, ObjectManager $om)
   {
     $this->repository = $repository;
-    $this->em = $em;
+    $this->om = $om;
   }
 
   /**
@@ -38,15 +38,17 @@ class PlayersController extends AbstractController
   public function step01(Request $request)
   {
     $player = new Players();
-    $form = $this->createForm(StepsType::class);
+    $form = $this->createForm(StepsType::class, $player);
     $form->get('current_step')->setData('step01');
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
-      $this->em->persist($player);
-      $this->em->flush();
+      $this->om->persist($player);
+      $this->om->flush();
       $this->addFlash('success', 'Bien créé avec succès');
-      return $this->redirectToRoute('contest.step02');
+      return $this->redirectToRoute('contest.step02', [
+        'id' => $player->getId()
+      ]);
     }
 
     return $this->render('contest/step01.html.twig', [
@@ -57,25 +59,25 @@ class PlayersController extends AbstractController
     ]);
   }
 
-  /*UPDATE A PARTIR PLAYER ICI*/
   /**
-   * @Route("/contest/s02", name="contest.step02")
+   * @Route("/contest/s02/{id}", name="contest.step02", methods="GET|POST")
    * @param Request $request
+   * @param Players $player
    * @return \Symfony\Component\HttpFoundation\Response
    * @throws \Exception
    */
-
-  public function step02(Request $request)
+  public function step02(Request $request, Players $player)
   {
-    $player = new Players();
-    $form = $this->createForm(StepsType::class);
+    $form = $this->createForm(StepsType::class, $player);
     $form->get('current_step')->setData('step02');
     $form->handleRequest($request);
 
-    if ($form->isSubmitted() && $form->isValid()) {
-      $this->em->persist($player);
-      $this->em->flush();
-      $this->addFlash('success', 'Bien upadaté avec succès');
+    if ($form->isSubmitted() && $form->isValid() && $this->isCsrfTokenValid('edit' . $player->getId(), $request->get('_token'))) {
+      $this->om->flush();
+      $this->addFlash('success', 'Bien updaté avec succès');
+      return $this->redirectToRoute('contest.step03', [
+        'id' => $player->getId()
+      ]);
     }
 
     return $this->render('contest/step02.html.twig', [
@@ -87,24 +89,52 @@ class PlayersController extends AbstractController
   }
 
   /**
-   * @Route("/contest/s04", name="contest.step04")
+   * @Route("/contest/s03/{id}", name="contest.step03", methods="GET|POST")
    * @param Request $request
+   * @param Players $player
    * @return \Symfony\Component\HttpFoundation\Response
    * @throws \Exception
    */
-
-
-/*  public function step04(Request $request)
+  public function step03(Request $request, Players $player)
   {
-    $player = new Players();
+    $form = $this->createForm(StepsType::class, $player);
+    $form->get('current_step')->setData('step03');
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid() && $this->isCsrfTokenValid('edit' . $player->getId(), $request->get('_token'))) {
+      $this->om->flush();
+      $this->addFlash('success', 'Bien updaté avec succès');
+      return $this->redirectToRoute('contest.step04', [
+        'id' => $player->getId()
+      ]);
+    }
+
+    return $this->render('contest/step03.html.twig', [
+      'controller_name' => 'Contest Step 03',
+      'current_menu_item' => 'contest',
+      'player' => $player,
+      'form' => $form->createView()
+    ]);
+  }
+
+
+  /**
+   * @Route("/contest/s04/{id}", name="contest.step04", methods="GET|POST")
+   * @param Request $request
+   * @param Players $player
+   * @return \Symfony\Component\HttpFoundation\Response
+   * @throws \Exception
+   */
+  public function step04(Request $request, Players $player)
+  {
     $form = $this->createForm(PlayersType::class, $player);
     $form->get('current_step')->setData('step04');
     $form->handleRequest($request);
 
-    if ($form->isSubmitted() && $form->isValid()) {
-      $this->em->persist($player);
-      $this->em->flush();
-      $this->addFlash('success', 'Bien créé avec succès');
+    if ($form->isSubmitted() && $form->isValid() && $this->isCsrfTokenValid('edit' . $player->getId(), $request->get('_token'))) {
+      $this->om->flush();
+      $this->addFlash('success', 'Bien updaté avec succès');
+      return $this->redirectToRoute('home');
     }
 
     return $this->render('contest/step04.html.twig', [
@@ -113,7 +143,8 @@ class PlayersController extends AbstractController
       'player' => $player,
       'form' => $form->createView()
     ]);
-  }*/
+  }
+
 
   /**
    * @Route("/contest/v", name="contest.stepVue")
