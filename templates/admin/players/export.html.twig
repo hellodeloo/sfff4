@@ -1,0 +1,16 @@
+{% set header = [
+  'Internal Id',
+  'title',
+  'url'
+] %}
+{{ str_putcsv(header) }}
+{% for i in data %}
+  {% spaceless %}
+    {% set row = [
+      i.id,
+      i.title,
+      absolute_url(path('route_to_post', { data: i.id }))
+    ] %}
+  {% endspaceless %}
+  {{ str_putcsv(row) }}
+{% endfor %}

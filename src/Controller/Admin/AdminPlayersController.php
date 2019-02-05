@@ -2,20 +2,56 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Answers;
 use App\Entity\Players;
 use App\Repository\PlayersRepository;
-use App\Repository\AnswersRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use Symfony\Component\HttpFoundation\StreamedResponse;
+use PhpOffice\PhpSpreadsheet\Writer as Writer;
 
 /**
  * @Route("/admin/players")
  */
 class AdminPlayersController extends AbstractController
 {
+
+  /**
+   * @Route("/export", name="admin.players.export", methods={"GET"})
+   * @return Response
+   * @param PlayersRepository $playersRepository
+   * @throws \PhpOffice\PhpSpreadsheet\Exception
+   */
+  public function export(PlayersRepository $playersRepository): Response
+  {
+    $players = $playersRepository->findAll();
+    $spreadsheet = new Spreadsheet();
+    $sheet = $spreadsheet->getActiveSheet();
+
+    $i = 0;
+    foreach ($players as $player) {
+      $i++;
+      $sheet->setCellValue("A{$i}", "{$player->getFirstname()}");
+      $sheet->setCellValue("B{$i}", "{$player->getLastname()}");
+    }
+
+    $writer = new Writer\Xls($spreadsheet);
+
+    $response =  new StreamedResponse(
+      function () use ($writer) {
+        $writer->save('php://output');
+      }
+    );
+    $response->headers->set('Content-Type', 'application/vnd.ms-excel');
+    $response->headers->set('Content-Disposition', 'attachment;filename="ExportScan.xls"');
+    $response->headers->set('Cache-Control','max-age=0');
+
+    return $response;
+  }
+
+
   /**
    * @Route("/", name="admin.players.index", methods={"GET"})
    * @param PlayersRepository $playersRepository
@@ -56,7 +92,6 @@ class AdminPlayersController extends AbstractController
       $entityManager->remove($player);
       $entityManager->flush();
     }
-
     return $this->redirectToRoute('admin.players.index');
   }
 }

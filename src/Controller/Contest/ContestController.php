@@ -17,7 +17,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ContestController extends AbstractController
 {
-
   /**
    * @var SessionInterface
    */
