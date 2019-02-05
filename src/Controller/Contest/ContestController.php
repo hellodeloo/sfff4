@@ -2,7 +2,9 @@
 
 namespace App\Controller\Contest;
 
+use App\Entity\Answers;
 use App\Entity\Players;
+use App\Form\AnswersType;
 use App\Form\PlayersType;
 use App\Repository\PlayersRepository;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -37,7 +39,23 @@ class ContestController extends AbstractController
    */
   public function step00(Request $request)
   {
-    return $this->render('contest/stepAnswer.html.twig');
+    $answer = new Answers();
+    $form = $this->createForm(AnswersType::class, $answer);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+      $this->om->persist($answer);
+      $this->om->flush();
+      $this->addFlash('success', 'Bien ajouté avec succès');
+      return $this->redirectToRoute('home');
+    }
+
+    return $this->render('contest/stepAnswer.html.twig', [
+      'controller_name' => 'Contest Step 01',
+      'current_menu_item' => 'contest',
+      'answer' => $answer,
+      'form' => $form->createView()
+    ]);
   }
 
 
