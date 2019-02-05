@@ -2,8 +2,10 @@
 
 namespace App\Controller\Contest;
 
+use App\Entity\Answers;
 use App\Entity\Players;
 use App\Form\PlayersType;
+use App\Form\Steps01Type;
 use App\Form\StepsType;
 use App\Repository\PlayersRepository;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -11,6 +13,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @Route("/contest")
+ */
 class PlayersController extends AbstractController
 {
   /**
@@ -29,23 +34,55 @@ class PlayersController extends AbstractController
   }
 
   /**
-   * @Route("/contest/s01", name="contest.step01")
+   * @Route("/", name="contest.step00")
    * @param Request $request
    * @return \Symfony\Component\HttpFoundation\Response
    * @throws \Exception
    */
 
-  public function step01(Request $request)
+  public function step00(Request $request)
   {
     $player = new Players();
-    $form = $this->createForm(StepsType::class, $player);
-    $form->get('current_step')->setData('step01');
+    $form = $this->createForm(Steps01Type::class, $player);
+    $form->get('current_step')->setData('step00');
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
       $this->om->persist($player);
       $this->om->flush();
       $this->addFlash('success', 'Bien créé avec succès');
+      return $this->redirectToRoute('contest.step01', [
+        'id' => $player->getId()
+      ]);
+    }
+
+    return $this->render('contest/step00.html.twig', [
+      'controller_name' => 'Contest Step 00',
+      'current_menu_item' => 'contest',
+      'player' => $player,
+      'form' => $form->createView()
+    ]);
+  }
+
+  /**
+   * @Route("/s01/{id}", name="contest.step01", methods="GET|POST")
+   * @param Request $request
+   * @param Players $player
+   * @return \Symfony\Component\HttpFoundation\Response
+   * @throws \Exception
+   */
+  public function step01(Request $request, Players $player)
+  {
+    $answer = new Answers();
+    $player->addAnswer($answer);
+
+    $form = $this->createForm(Steps01Type::class, $player);
+    $form->get('current_step')->setData('step01');
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid() && $this->isCsrfTokenValid('edit' . $player->getId(), $request->get('_token'))) {
+      $this->om->flush();
+      $this->addFlash('success', 'Bien updaté avec succès');
       return $this->redirectToRoute('contest.step02', [
         'id' => $player->getId()
       ]);
@@ -60,7 +97,7 @@ class PlayersController extends AbstractController
   }
 
   /**
-   * @Route("/contest/s02/{id}", name="contest.step02", methods="GET|POST")
+   * @Route("/s02/{id}", name="contest.step02", methods="GET|POST")
    * @param Request $request
    * @param Players $player
    * @return \Symfony\Component\HttpFoundation\Response
@@ -89,7 +126,7 @@ class PlayersController extends AbstractController
   }
 
   /**
-   * @Route("/contest/s03/{id}", name="contest.step03", methods="GET|POST")
+   * @Route("/s03/{id}", name="contest.step03", methods="GET|POST")
    * @param Request $request
    * @param Players $player
    * @return \Symfony\Component\HttpFoundation\Response
@@ -119,7 +156,7 @@ class PlayersController extends AbstractController
 
 
   /**
-   * @Route("/contest/s04/{id}", name="contest.step04", methods="GET|POST")
+   * @Route("/s04/{id}", name="contest.step04", methods="GET|POST")
    * @param Request $request
    * @param Players $player
    * @return \Symfony\Component\HttpFoundation\Response
@@ -147,7 +184,7 @@ class PlayersController extends AbstractController
 
 
   /**
-   * @Route("/contest/v", name="contest.stepVue")
+   * @Route("/v", name="contest.stepVue")
    */
   public function vue()
   {

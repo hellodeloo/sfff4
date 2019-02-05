@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+
+<title>Players</title>
+
+{% block body %}
+    <h1>Players</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ answer.id }}</td>
+            </tr>
+            <tr>
+                <th>Firstname</th>
+                <td>{{ answer.question }}</td>
+            </tr>
+            <tr>
+                <th>Lastname</th>
+                <td>{{ answer.answer }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ answer.priority }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('admin.answers.index') }}">back to list</a>
+{% endblock %}

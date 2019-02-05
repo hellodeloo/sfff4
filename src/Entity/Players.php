@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -75,6 +77,10 @@ class Players
    */
   private $updated_at;
 
+  /**
+   * @ORM\OneToMany(targetEntity="App\Entity\Answers", mappedBy="players", orphanRemoval=true)
+   */
+  private $answer;
 
   /**
    * Players constructor.
@@ -84,6 +90,7 @@ class Players
   {
     $this->created_at = new \DateTime();
     $this->updated_at = new \DateTime();
+    $this->answer = new ArrayCollection();
   }
 
   public function getId(): ?int
@@ -206,5 +213,36 @@ class Players
   public function setUpdatedAtValue()
   {
     $this->updated_at = new \DateTime();
+  }
+
+  /**
+   * @return Collection|Answers[]
+   */
+  public function getAnswer(): Collection
+  {
+      return $this->answer;
+  }
+
+  public function addAnswer(Answers $answer): self
+  {
+      if (!$this->answer->contains($answer)) {
+          $this->answer[] = $answer;
+          $answer->setPlayers($this);
+      }
+
+      return $this;
+  }
+
+  public function removeAnswer(Answers $answer): self
+  {
+      if ($this->answer->contains($answer)) {
+          $this->answer->removeElement($answer);
+          // set the owning side to null (unless already changed)
+          if ($answer->getPlayers() === $this) {
+              $answer->setPlayers(null);
+          }
+      }
+
+      return $this;
   }
 }

@@ -10,10 +10,7 @@
       <div class="c-main__row row">
         <div class="c-main__col col">
           <h1>{{ controller_name }}</h1>
-          <ul>
-            <li><a href="{{ path('admin.players.index') }}">Players</a></li>
-            <li><a href="{{ path('admin.answers.index') }}">Answers</a></li>
-          </ul>
+          {{ include('admin/answers/_form.html.twig', {button: 'Editer'}) }}
         </div>
       </div>
 
