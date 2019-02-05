@@ -4,7 +4,6 @@ namespace App\Form;
 
 use App\Entity\Players;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -19,7 +18,6 @@ class PlayersType extends AbstractType
       ->add('address')
       ->add('postal_code')
       ->add('city')
-      ->add('current_step', HiddenType::class)
     ;
   }
 

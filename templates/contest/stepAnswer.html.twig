@@ -26,7 +26,6 @@
           <div>
             {{ form_start(form) }}
             {{ form_rest(form) }}
-            <input type="hidden" name="_token" value="{{ csrf_token('edit' ~ player.id) }}">
             <div class="form-group">
               <button class="btn btn-primary">Etape suivante</button>
             </div>
