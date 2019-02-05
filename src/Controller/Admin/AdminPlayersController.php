@@ -2,8 +2,10 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Answers;
 use App\Entity\Players;
 use App\Repository\PlayersRepository;
+use App\Repository\AnswersRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,7 +39,7 @@ class AdminPlayersController extends AbstractController
   {
     return $this->render('admin/players/show.html.twig', [
       'controller_name' => 'Admin Players Show',
-      'player' => $player,
+      'player' => $player
     ]);
   }
 
