@@ -39,6 +39,12 @@ class Answers
    */
   private $priority;
 
+  /**
+   * @ORM\ManyToOne(targetEntity="App\Entity\Players", inversedBy="answers")
+   * @ORM\JoinColumn(nullable=false)
+   */
+  private $player;
+
   public function getId(): ?int
   {
     return $this->id;
@@ -83,5 +89,17 @@ class Answers
   public function getPriorityType(): string
   {
     return self::PRIORITY[$this->priority];
+  }
+
+  public function getPlayer(): ?Players
+  {
+      return $this->player;
+  }
+
+  public function setPlayer(?Players $player): self
+  {
+      $this->player = $player;
+
+      return $this;
   }
 }

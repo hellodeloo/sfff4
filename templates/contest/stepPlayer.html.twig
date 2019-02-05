@@ -23,6 +23,12 @@
             </div>
           {% endif %}
 
+          {% if session %}
+            <div>
+              {{ dump(session) }}
+            </div>
+          {% endif %}
+
           <div>
             {{ form_start(form) }}
             {{ form_rest(form) }}
