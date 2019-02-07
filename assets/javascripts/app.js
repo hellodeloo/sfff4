@@ -26,3 +26,12 @@ $(window).on('resize orientationchange', function() {
 $(window).on('scroll', function() {
   console.log('window scroll');
 });
+
+
+// Vue.js
+import App from './components/App.vue';
+import Vue from 'vue';
+new Vue({
+  el: '#app',
+  render: h => h(App)
+});

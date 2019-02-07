@@ -39,6 +39,9 @@ Encore
   // allow legacy applications to use $/jQuery as a global variable
   .autoProvidejQuery()
 
+  // enable Vue.js
+  .enableVueLoader()
+
   // enables Sass/SCSS support
   .enableSassLoader()
 
