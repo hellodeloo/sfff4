@@ -1,4 +1,6 @@
-const $ = require('jquery');
+global.$ = require('jquery');
+global.axios = require('axios');
+
 require('popper.js');
 require('bootstrap');
 
@@ -25,13 +27,4 @@ $(window).on('resize orientationchange', function() {
 // Re-initialisation au scroll
 $(window).on('scroll', function() {
   console.log('window scroll');
-});
-
-
-// Vue.js
-import App from './components/App.vue';
-import Vue from 'vue';
-new Vue({
-  el: '#app',
-  render: h => h(App)
 });

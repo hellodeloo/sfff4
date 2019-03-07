@@ -12,18 +12,19 @@ Encore
   /*
    * ENTRY CONFIG
    *
-   * Add 1 entry for each "page" of your app
-   * (including one that's included on every page - e.g. "app")
+   * Add 1 entry for each "page" of your vue
+   * (including one that's included on every page - e.g. "vue")
    *
-   * Each entry will result in one JavaScript file (e.g. app.js)
-   * and one CSS file (e.g. app.css) if you JavaScript imports CSS.
+   * Each entry will result in one JavaScript file (e.g. appVue.js)
+   * and one CSS file (e.g. vue.css) if you JavaScript imports CSS.
    */
-  .addEntry('stylesheets/app', './assets/stylesheets/app.scss')
+  .addStyleEntry('stylesheets/app', './assets/stylesheets/app.scss')
   .addEntry('javascripts/app', './assets/javascripts/app.js')
+  .addEntry('javascripts/app.vue', './assets/javascripts/app.vue.js')
   .addEntry('images', glob.sync('./assets/images/*'))
 
   // will require an extra script tag for runtime.js
-  // but, you probably want this, unless you're building a single-page app
+  // but, you probably want this, unless you're building a single-page vue
   .disableSingleRuntimeChunk()
 
   /*
@@ -54,7 +55,7 @@ Encore
   .enableSourceMaps(!Encore.isProduction())
   // ... but you can override it by passing a boolean value
   .enableSourceMaps(true)
-  // enables hashed filenames (e.g. app.abc123.css)
+  // enables hashed filenames (e.g. vue.abc123.css)
   .configureFilenames({
     js: '[name].js',
     css: '[name].css',

@@ -10,7 +10,11 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 /**
  * @Route("/contest")
@@ -26,6 +30,28 @@ class ContestController extends AbstractController
    * @var ObjectManager
    */
   private $om;
+
+  /**
+   * @param $object
+   * @return bool|float|int|string
+   */
+  private function serializeObject($object)
+  {
+    $encoders = new JsonEncoder();
+    $normalizers = new ObjectNormalizer();
+    $serializer = new Serializer([$normalizers], [$encoders]);
+
+    return $serializer->serialize($object, 'json');
+  }
+
+  /**
+   * @param $array
+   * @return bool|float|int|string
+   */
+  private function unserializeObject($array)
+  {
+    return json_decode($array, true);
+  }
 
   public function __construct(ObjectManager $om, SessionInterface $session)
   {
@@ -183,15 +209,147 @@ class ContestController extends AbstractController
     ]);
   }
 
-
   /**
    * @Route("/v", name="contest.stepVue")
+   * @param Request $request
+   * @return \Symfony\Component\HttpFoundation\Response
    */
-  public function vue()
+  public function vue00(Request $request)
   {
+    $answer = new Answers();
+    $form = $this->createForm(AnswersType::class, $answer);
+    $form->handleRequest($request);
+
     return $this->render('contest/stepVue.html.twig', [
       'controller_name' => 'Contest Vue.js',
-      'current_menu_item' => 'contest'
+      'current_menu_item' => 'contest',
+      'answer' => $answer,
+      'form' => $form->createView()
     ]);
+  }
+
+
+  /**
+   * @Route("/v01", name="contest.stepVue01")
+   * @param Request $request
+   * @return JsonResponse
+   */
+  public function vue01(Request $request)
+  {
+    $answer = $this->unserializeObject($request->getContent());
+
+    if ($answer['question']) {
+      $this->session->start();
+      $this->session->set('answers', []);
+
+      $sessionAnswers = $this->session->get('answers');
+      array_push(
+        $sessionAnswers, [
+          'question' => $answer['question'],
+          'answer' => $answer['answer'],
+          'priority' => $answer['priority']
+        ]
+      );
+      $this->session->set('answers', $sessionAnswers);
+
+      return new JsonResponse('ok', 200);
+    }
+
+    return new JsonResponse('ko', 500);
+  }
+
+
+  /**
+   * @Route("/v02", name="contest.stepVue02")
+   * @param Request $request
+   * @return JsonResponse
+   */
+  public function vue02(Request $request)
+  {
+    $answer = $this->unserializeObject($request->getContent());
+
+    if ($answer['question']) {
+
+      $sessionAnswers = $this->session->get('answers');
+      array_push(
+        $sessionAnswers, [
+          'question' => $answer['question'],
+          'answer' => $answer['answer'],
+          'priority' => $answer['priority']
+        ]
+      );
+      $this->session->set('answers', $sessionAnswers);
+
+      return new JsonResponse('ok', 200);
+    }
+
+    return new JsonResponse('ko', 500);
+  }
+
+  /**
+   * @Route("/v03", name="contest.stepVue03")
+   * @param Request $request
+   * @return JsonResponse
+   */
+  public function vue03(Request $request)
+  {
+    $answer = $this->unserializeObject($request->getContent());
+
+    if ($answer['question']) {
+
+      $sessionAnswers = $this->session->get('answers');
+      array_push(
+        $sessionAnswers, [
+          'question' => $answer['question'],
+          'answer' => $answer['answer'],
+          'priority' => $answer['priority']
+        ]
+      );
+      $this->session->set('answers', $sessionAnswers);
+
+      return new JsonResponse('ok', 200);
+    }
+
+    return new JsonResponse('ko', 500);
+  }
+
+
+  /**
+   * @Route("/v04", name="contest.stepVue04")
+   * @param Request $request
+   * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
+   * @throws \Exception
+   */
+  public function vue04(Request $request)
+  {
+    $playerContent = $this->unserializeObject($request->getContent());
+    $sessionAnswers = $this->session->get('answers');
+
+    if ($playerContent['firstname']) {
+
+      $player = new Players();
+      $player->setFirstname($playerContent['firstname']);
+      $player->setLastname($playerContent['lastname']);
+      $player->setEmail($playerContent['email']);
+      $player->setAddress($playerContent['address']);
+      $player->setPostalCode($playerContent['postal_code']);
+      $player->setCity($playerContent['city']);
+
+      $this->om->persist($player);
+
+      foreach ($sessionAnswers as $sessionAnswer) {
+        $answer = new Answers();
+        $answer->setQuestion($sessionAnswer['question']);
+        $answer->setAnswer($sessionAnswer['answer']);
+        $answer->setPriority($sessionAnswer['priority']);
+        $answer->setPlayer($player);
+        $this->om->persist($answer);
+      }
+
+      $this->om->flush();
+      return new JsonResponse('ok', 200);
+    }
+
+    return new JsonResponse('ko', 500);
   }
 }

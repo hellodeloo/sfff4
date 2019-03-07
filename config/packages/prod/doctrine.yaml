@@ -27,6 +27,6 @@ framework:
     cache:
         pools:
             doctrine.result_cache_pool:
-                adapter: cache.app
+                adapter: cache.vue
             doctrine.system_cache_pool:
                 adapter: cache.system
