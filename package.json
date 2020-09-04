@@ -5,7 +5,7 @@
     "@symfony/webpack-encore": "^0.22.0",
     "autoprefixer": "^9.4.6",
     "eslint": "^5.12.1",
-    "node-sass": "^4.11.0",
+    "node-sass": "^4.13.1",
     "postcss-loader": "^3.0.0",
     "sass-loader": "^7.0.1",
     "vue": "^2.6.3",
